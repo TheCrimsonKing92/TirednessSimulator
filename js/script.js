@@ -271,6 +271,16 @@ var Banner = React.createClass({
     }  
 });
 
+var StatsBar = React.createClass({
+    render: function() {
+        <div className="col-xs-12 statsBar">
+            <HealthBar health={this.props.health} />
+            <EnergyBar energy={this.props.energy} />
+            <MoneyBar money={this.props.money} />
+        </div>
+    }
+});
+
 var GameWindow = React.createClass({
     render: function() {
         return (
@@ -282,16 +292,18 @@ var GameWindow = React.createClass({
 
     renderConditional: function(){
         if (this.props.screen === 2) return(<LoadScreen />);
-        else if (this.props.screen === 3) return(<StatisticsScreen />);
-        else return(<GameScreen />);
+        else if (this.props.screen === 3) return(<StatisticsScreen environment={this.props.environment} player={this.props.player} />);
+        else return(<GameScreen environment={this.props.environment} player={this.props.player} />);
     }
 });
 
 var GameScreen = React.createClass({
     render: function(){
-        <div className="gameScreen">
-            <h4>We gotz a game wwheeee</h4>
-        </div>
+        return (
+            <div className="gameScreen">
+                <StatsBar energy={this.props.player.energy} health={this.props.player.health} money={this.props.player.money} />
+            </div>
+        )
     }
 });
 
@@ -374,7 +386,10 @@ var Game = React.createClass({
             lastSelected: null,
 
             player: {
+                energy: 20,
                 generated: false,
+                health: 20,
+                money: 5000
             },
 
             selected: 1
